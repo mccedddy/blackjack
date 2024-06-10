@@ -1,28 +1,40 @@
 import React from "react";
 
-function Button({ text, color }) {
+function Button({ text, color, onClick }) {
   console.log(color);
   if (color === "greenButton") {
     return (
-      <button className="p-2 w-full bg-greenButton text-white rounded-lg outline-none active:bg-green-600">
+      <button
+        className="p-2 w-full bg-greenButton text-white rounded-lg outline-none active:bg-green-600"
+        onClick={onClick}
+      >
         {text}
       </button>
     );
   } else if (color === "redButton") {
     return (
-      <button className="p-2 w-full bg-redButton text-white rounded-lg outline-none active:bg-red-700">
+      <button
+        className="p-2 w-full bg-redButton text-white rounded-lg outline-none active:bg-red-700"
+        onClick={onClick}
+      >
         {text}
       </button>
     );
   } else if (color === "orangeButton") {
     return (
-      <button className="p-2 w-full bg-orangeButton text-white rounded-lg outline-none active:bg-yellow-600">
+      <button
+        className="p-2 w-full bg-orangeButton text-white rounded-lg outline-none active:bg-yellow-600"
+        onClick={onClick}
+      >
         {text}
       </button>
     );
   } else {
     return (
-      <button className="p-2 w-full bg-blackButton text-white rounded-lg outline-none active:bg-gray-800">
+      <button
+        className="p-2 w-full bg-blackButton text-white rounded-lg outline-none active:bg-gray-800"
+        onClick={onClick}
+      >
         {text}
       </button>
     );

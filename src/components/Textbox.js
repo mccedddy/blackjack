@@ -1,7 +1,8 @@
 import React from "react";
 
 function Textbox({ placeholder, value }) {
-  const isPassword = placeholder === "Password";
+  const isPassword =
+    placeholder === "Password" || placeholder === "Confirm Password";
 
   return (
     <input
