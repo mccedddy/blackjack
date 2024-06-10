@@ -1,12 +1,13 @@
 import React from "react";
 import Navbar from "./components/Navbar";
+import Modal from "./components/Modal";
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="min-h-screen min-w-screen flex items-center justify-center bg-boardColor shadow-boardShadow">
-        <h1 className="text-4xl font-bold text-white font-cardo">BLACKJACK</h1>
+      <div className="flex-grow flex items-center justify-center bg-boardColor shadow-boardShadow">
+        <Modal type="menu" />
       </div>
     </div>
   );
