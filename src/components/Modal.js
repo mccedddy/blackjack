@@ -12,18 +12,18 @@ function Modal({ type, setModalType }) {
         <h1 className="text-4xl">BLACKJACK</h1>
         <Texbox placeholder="Email" />
         <Texbox placeholder="Password" />
-        <Button
-          text="Login"
-          color="bg-greenButton"
-          onClick={() => setModalType("menu")}
-        />
+        <Button text="Login" color="bg-greenButton" />
         <Button
           text="Register"
           color="bg-redButton"
           onClick={() => setModalType("register")}
         />
         <p>or</p>
-        <Button text="Play as Guest" color="bg-blackButton" />
+        <Button
+          text="Play as Guest"
+          color="bg-blackButton"
+          onClick={() => setModalType("menu")}
+        />
       </div>
     );
   } else if (type === "register") {
