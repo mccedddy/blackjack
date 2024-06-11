@@ -19,6 +19,9 @@ module.exports = {
         textboxShadow: "inset 0px 2px 1px 1px rgba(0, 0, 0, 0.1)",
         modalShadow: "0px 0px 10px 6px rgba(0, 0, 0, 0.3)",
       },
+      fontFamily: {
+        cardo: ["Cardo", "serif"],
+      },
     },
   },
   plugins: [],

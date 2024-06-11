@@ -48,7 +48,7 @@ function Modal({ type, setModalType }) {
       <div className="w-80 h-auto d-flex flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
         <BlackJackIcon />
         <h1 className="text-4xl">BLACKJACK</h1>
-        <Container text="$1000" />
+        <Container text="1000" />
         <Texbox placeholder="Bet" />
         <Button text="Play" color="bg-greenButton" />
         <p>or</p>
