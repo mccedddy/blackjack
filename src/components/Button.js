@@ -1,50 +1,25 @@
 import React from "react";
 
 function Button({ text, color, onClick }) {
-  console.log(color);
-  if (color === "greenButton") {
-    return (
-      <button
-        className="p-2 w-full bg-greenButton text-white rounded-lg outline-none active:bg-green-600"
-        onClick={onClick}
-      >
-        {text}
-      </button>
-    );
-  } else if (color === "redButton") {
-    return (
-      <button
-        className="p-2 w-full bg-redButton text-white rounded-lg outline-none active:bg-red-700"
-        onClick={onClick}
-      >
-        {text}
-      </button>
-    );
-  } else if (color === "orangeButton") {
-    return (
-      <button
-        className="p-2 w-full bg-orangeButton text-white rounded-lg outline-none active:bg-yellow-600"
-        onClick={onClick}
-      >
-        {text}
-      </button>
-    );
+  var activeColor;
+  if (color === "bg-greenButton") {
+    activeColor = "active:bg-green-600";
+  } else if (color === "bg-redButton") {
+    activeColor = "active:bg-red-700";
+  } else if (color === "bg-orangeButton") {
+    activeColor = "active:bg-yellow-600";
   } else {
-    return (
-      <button
-        className="p-2 w-full bg-blackButton text-white rounded-lg outline-none active:bg-gray-800"
-        onClick={onClick}
-      >
-        {text}
-      </button>
-    );
+    activeColor = "active:bg-neutral-800";
   }
 
-  // return (
-  //   <button className={`p-2 w-full bg-${color} rounded-lg outline-none`}>
-  //     {text}
-  //   </button>
-  // );
+  return (
+    <button
+      className={`p-2 w-full ${color} rounded-lg outline-none text-white ${activeColor}`}
+      onClick={onClick}
+    >
+      {text}
+    </button>
+  );
 }
 
 export default Button;

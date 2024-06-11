@@ -14,16 +14,16 @@ function Modal({ type, setModalType }) {
         <Texbox placeholder="Password" />
         <Button
           text="Login"
-          color="greenButton"
+          color="bg-greenButton"
           onClick={() => setModalType("menu")}
         />
         <Button
           text="Register"
-          color="redButton"
+          color="bg-redButton"
           onClick={() => setModalType("register")}
         />
         <p>or</p>
-        <Button text="Play as Guest" color="blackButton" />
+        <Button text="Play as Guest" color="bg-blackButton" />
       </div>
     );
   } else if (type === "register") {
@@ -34,11 +34,11 @@ function Modal({ type, setModalType }) {
         <Texbox placeholder="Email" />
         <Texbox placeholder="Password" />
         <Texbox placeholder="Confirm Password" />
-        <Button text="Register" color="orangeButton" />
+        <Button text="Register" color="bg-orangeButton" />
         <p>or</p>
         <Button
           text="Back to Login"
-          color="blackButton"
+          color="bg-blackButton"
           onClick={() => setModalType("login")}
         />
       </div>
@@ -50,17 +50,16 @@ function Modal({ type, setModalType }) {
         <h1 className="text-4xl">BLACKJACK</h1>
         <Container text="$1000" />
         <Texbox placeholder="Bet" />
-        <Button text="Play" color="greenButton" />
+        <Button text="Play" color="bg-greenButton" />
         <p>or</p>
         <Button
           text="Log Out"
-          color="blackButton"
+          color="bg-blackButton"
           onClick={() => setModalType("login")}
         />
       </div>
     );
   }
-  return <div className="bg-white p-4 rounded-lg"></div>;
 }
 
 export default Modal;
