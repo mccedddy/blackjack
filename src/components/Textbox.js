@@ -1,6 +1,6 @@
 import React from "react";
 
-function Textbox({ placeholder, value, isDisabled }) {
+function Textbox({ placeholder, value, isDisabled, onChange }) {
   var align = "";
   const isPassword =
     placeholder === "Password" || placeholder === "Confirm Password";
@@ -15,6 +15,7 @@ function Textbox({ placeholder, value, isDisabled }) {
       placeholder={placeholder}
       value={value}
       disabled={isDisabled}
+      onChange={onChange}
     ></input>
   );
 }
