@@ -6,7 +6,7 @@ import { ReactComponent as BlackJackIcon } from "../assets/icons/blackjack.svg";
 
 function Modal({ type, setModalType, setModalVisible }) {
   const [bet, setBet] = useState(100);
-  const [currentMoney, setCurrentMoney] = useState(1000);
+  const [currentMoney] = useState(1000);
 
   const play = () => {
     const currentAmount = 1000;
