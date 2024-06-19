@@ -1,5 +1,4 @@
 import React from "react";
-import { ReactComponent as GithubIcon } from "../assets/icons/github.svg";
 
 function Navbar({ setModalVisible }) {
   return (
@@ -18,7 +17,11 @@ function Navbar({ setModalVisible }) {
             href="https://www.github.com/mccedddy/blackjack"
             className="text-white mx-4"
           >
-            <GithubIcon className="w-8 h-8" />
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/icons/github.svg`}
+              alt="GitHub"
+              className="w-8 h-8"
+            />
           </a>
         </div>
       </div>

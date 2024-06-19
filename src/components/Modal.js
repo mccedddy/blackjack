@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Texbox from "./Textbox";
 import Container from "./Container";
 import Button from "./Button";
-import { ReactComponent as BlackJackIcon } from "../assets/icons/blackjack.svg";
 
-function Modal({ type, setModalType, setModalVisible }) {
+function Modal({ type, setModalType, setModalVisible, setPlaying }) {
   const [bet, setBet] = useState(100);
   const [currentMoney] = useState(1000);
 
@@ -16,6 +15,7 @@ function Modal({ type, setModalType, setModalVisible }) {
 
     if (isWholeNumber && betAmount > 0) {
       if (betAmount <= currentAmount) {
+        setPlaying(true);
         setModalVisible(false);
       } else {
         alert("You don't have enough money.");
@@ -28,7 +28,10 @@ function Modal({ type, setModalType, setModalVisible }) {
   if (type === "login") {
     return (
       <div className="w-80 h-auto d-flex flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
-        <BlackJackIcon />
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/icons/blackjack.svg`}
+          alt="Blackjack"
+        />
         <h1 className="text-4xl">BLACKJACK</h1>
         <Texbox placeholder="Email" />
         <Texbox placeholder="Password" />
@@ -49,7 +52,10 @@ function Modal({ type, setModalType, setModalVisible }) {
   } else if (type === "register") {
     return (
       <div className="w-80 h-auto d-flex flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
-        <BlackJackIcon />
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/icons/blackjack.svg`}
+          alt="Blackjack"
+        />
         <h1 className="text-4xl">BLACKJACK</h1>
         <Texbox placeholder="Email" />
         <Texbox placeholder="Password" />
@@ -66,7 +72,10 @@ function Modal({ type, setModalType, setModalVisible }) {
   } else if (type === "menu") {
     return (
       <div className="w-80 h-auto d-flex flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
-        <BlackJackIcon />
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/icons/blackjack.svg`}
+          alt="Blackjack"
+        />
         <h1 className="text-4xl">BLACKJACK</h1>
         <Container text={currentMoney} value={currentMoney} type="money" />
         <Texbox
