@@ -6,30 +6,13 @@ import Button from "./Button";
 function Modal({
   type,
   setModalType,
-  setModalVisible,
-  setPlaying,
+  bet,
+  setBet,
+  money,
+  setMoney,
   handlePlayClick,
+  handlePlayAsGuest,
 }) {
-  const [bet, setBet] = useState(100);
-  const [currentMoney] = useState(1000);
-
-  const play = () => {
-    const currentAmount = 1000;
-    const betAmount = parseInt(bet, 10);
-
-    const isWholeNumber = /^[0-9]+$/.test(bet);
-
-    if (isWholeNumber && betAmount > 0) {
-      if (betAmount <= currentAmount) {
-        handlePlayClick();
-      } else {
-        alert("You don't have enough money.");
-      }
-    } else {
-      alert("Invalid bet amount. Please enter a whole number.");
-    }
-  };
-
   if (type === "login") {
     return (
       <div className="w-80 h-auto flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
@@ -50,7 +33,7 @@ function Modal({
         <Button
           text="Play as Guest"
           color="bg-blackButton"
-          onClick={() => setModalType("menu")}
+          onClick={() => handlePlayAsGuest()}
         />
       </div>
     );
@@ -82,13 +65,13 @@ function Modal({
           alt="Blackjack"
         />
         <h1 className="text-4xl">BLACKJACK</h1>
-        <Container text={currentMoney} value={currentMoney} type="money" />
+        <Container text={money} value={money} type="money" />
         <Texbox
           placeholder="Bet"
           value={bet}
           onChange={(e) => setBet(e.target.value)}
         />
-        <Button text="Play" color="bg-greenButton" onClick={play} />
+        <Button text="Play" color="bg-greenButton" onClick={handlePlayClick} />
         <p>or</p>
         <Button
           text="Log Out"
