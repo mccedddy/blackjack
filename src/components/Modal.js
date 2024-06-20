@@ -3,7 +3,13 @@ import Texbox from "./Textbox";
 import Container from "./Container";
 import Button from "./Button";
 
-function Modal({ type, setModalType, setModalVisible, setPlaying }) {
+function Modal({
+  type,
+  setModalType,
+  setModalVisible,
+  setPlaying,
+  handlePlayClick,
+}) {
   const [bet, setBet] = useState(100);
   const [currentMoney] = useState(1000);
 
@@ -15,8 +21,7 @@ function Modal({ type, setModalType, setModalVisible, setPlaying }) {
 
     if (isWholeNumber && betAmount > 0) {
       if (betAmount <= currentAmount) {
-        setPlaying(true);
-        setModalVisible(false);
+        handlePlayClick();
       } else {
         alert("You don't have enough money.");
       }
@@ -27,7 +32,7 @@ function Modal({ type, setModalType, setModalVisible, setPlaying }) {
 
   if (type === "login") {
     return (
-      <div className="w-80 h-auto d-flex flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
+      <div className="w-80 h-auto flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
         <img
           src={`${process.env.PUBLIC_URL}/assets/icons/blackjack.svg`}
           alt="Blackjack"
@@ -51,7 +56,7 @@ function Modal({ type, setModalType, setModalVisible, setPlaying }) {
     );
   } else if (type === "register") {
     return (
-      <div className="w-80 h-auto d-flex flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
+      <div className="w-80 h-auto flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
         <img
           src={`${process.env.PUBLIC_URL}/assets/icons/blackjack.svg`}
           alt="Blackjack"
@@ -71,7 +76,7 @@ function Modal({ type, setModalType, setModalVisible, setPlaying }) {
     );
   } else if (type === "menu") {
     return (
-      <div className="w-80 h-auto d-flex flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
+      <div className="w-80 h-auto flex flex-col gap-2 items-center justify-center bg-white p-4 rounded-lg shadow-modalShadow">
         <img
           src={`${process.env.PUBLIC_URL}/assets/icons/blackjack.svg`}
           alt="Blackjack"
@@ -83,7 +88,7 @@ function Modal({ type, setModalType, setModalVisible, setPlaying }) {
           value={bet}
           onChange={(e) => setBet(e.target.value)}
         />
-        <Button text="Play" color="bg-greenButton" onClick={() => play()} />
+        <Button text="Play" color="bg-greenButton" onClick={play} />
         <p>or</p>
         <Button
           text="Log Out"

@@ -9,7 +9,7 @@ function Card({ value }) {
     <img
       src={cardImage}
       alt={value ? `Card ${value}` : "Card Back"}
-      className="h-24"
+      className="h-20"
     />
   );
 }
