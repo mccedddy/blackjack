@@ -8,6 +8,9 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
   const [stack, setStack] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
+  const [playerValue, setPlayerValue] = useState([]);
+  const [dealerValue, setDealerValue] = useState([]);
+  const stand = false;
 
   const deck = [
     "1c",
@@ -50,18 +53,18 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
     "10s",
     "10d",
     "10h",
-    "11c",
-    "11s",
-    "11d",
-    "11h",
-    "12c",
-    "12s",
-    "12d",
-    "12h",
-    "13c",
-    "13s",
-    "13d",
-    "13h",
+    "10Jc",
+    "10Js",
+    "10Jd",
+    "10Jh",
+    "10Qc",
+    "10Qs",
+    "10Qd",
+    "10Qh",
+    "10Kc",
+    "10Ks",
+    "10Kd",
+    "10Kh",
   ];
 
   function shuffle(array) {
@@ -106,6 +109,36 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
     });
   }
 
+  const calculateHandValue = (hand) => {
+    let value = 0;
+    let aces = 0;
+
+    hand.forEach((card) => {
+      // Skip unflipped
+      if (card.endsWith("0")) {
+        return;
+      }
+
+      const cardValue = card.slice(0, -1);
+      if (cardValue === "A") {
+        value += 11;
+        aces += 1;
+      } else if (["K", "Q", "J"].includes(cardValue)) {
+        value += 10;
+      } else {
+        value += parseInt(cardValue, 10);
+      }
+    });
+
+    // Adjust for Aces if the value goes over 21
+    while (value > 21 && aces) {
+      value -= 10;
+      aces -= 1;
+    }
+
+    return value;
+  };
+
   // Initialize
   useEffect(() => {
     const initializeGame = async () => {
@@ -125,8 +158,12 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
   }, []);
 
   useEffect(() => {
+    setPlayerValue(calculateHandValue(playerHand));
+    setDealerValue(calculateHandValue(dealerHand));
     console.log("Player Hand:", playerHand);
+    console.log("Player Value:", playerValue);
     console.log("Dealer Hand:", dealerHand);
+    console.log("Dealer Value:", dealerValue);
   }, [playerHand, dealerHand]);
 
   // Log stack
@@ -148,7 +185,7 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
             <Card key={index} value={card} />
           ))}
         </div>
-        <Container text="0" />
+        <Container text={dealerValue} />
       </div>
 
       {/* Action section */}
@@ -160,25 +197,18 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
             color="bg-greenButton"
             onClick={() => drawCard(setPlayerHand)}
           />
-          <Button text="-" color="bg-redButton" />
+          <Button text="-" color="bg-redButton" onClick={() => revealCards()} />
           <Button
             text="F"
             color="bg-blackButton"
             onClick={handleForfeitClick}
-          />
-          <Button
-            text="Unflip"
-            color="bg-blackButton"
-            onClick={() => {
-              revealCards();
-            }}
           />
         </div>
       )}
 
       {/* Player section */}
       <div className="flex flex-col gap-2 items-center mb-4 w-full">
-        <Container text="0" />
+        <Container text={playerValue} />
         <div id="playerHand" className="flex space-x-1">
           {playerHand.map((card, index) => (
             <Card key={index} value={card} />
