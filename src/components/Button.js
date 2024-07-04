@@ -1,6 +1,6 @@
 import React from "react";
 
-function Button({ text, color, onClick }) {
+function Button({ text, color, onClick, disabled = false }) {
   var activeColor;
   if (color === "bg-greenButton") {
     activeColor = "active:bg-green-600";
@@ -16,6 +16,7 @@ function Button({ text, color, onClick }) {
     <button
       className={`p-2 w-full ${color} rounded-lg outline-none text-white ${activeColor}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {text}
     </button>

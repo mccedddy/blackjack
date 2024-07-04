@@ -10,7 +10,7 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
   const [dealerHand, setDealerHand] = useState([]);
   const [playerValue, setPlayerValue] = useState([]);
   const [dealerValue, setDealerValue] = useState([]);
-  const stand = false;
+  const [stand, setStand] = useState(false);
 
   const deck = [
     "1c",
@@ -144,13 +144,13 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
     const initializeGame = async () => {
       const shuffledDeck = shuffle([...deck]);
       setStack(shuffledDeck);
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 250));
       await drawCard(setPlayerHand);
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 250));
       await drawCard(setDealerHand);
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 250));
       await drawCard(setPlayerHand);
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 250));
       await drawCard(setDealerHand, true);
     };
 
@@ -172,6 +172,20 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
       console.log("Stack:", stack);
     }
   }, [stack]);
+
+  useEffect(() => {
+    const dealerDraw = async () => {
+      if (stand && dealerValue < playerValue) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        await drawCard(setDealerHand);
+        setDealerValue(calculateHandValue(dealerHand));
+      }
+    };
+
+    if (stand) {
+      dealerDraw();
+    }
+  }, [stand, dealerValue, playerValue]);
 
   return (
     <div className="h-full w-full max-w-xl p-4 flex flex-col gap-2 justify-center items-center">
@@ -196,8 +210,16 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
             text="+"
             color="bg-greenButton"
             onClick={() => drawCard(setPlayerHand)}
+            disabled={stand}
           />
-          <Button text="-" color="bg-redButton" onClick={() => revealCards()} />
+          <Button
+            text="-"
+            color="bg-redButton"
+            onClick={() => {
+              revealCards();
+              setStand(true);
+            }}
+          />
           <Button
             text="F"
             color="bg-blackButton"
