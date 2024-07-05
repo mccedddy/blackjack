@@ -8,9 +8,12 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
   const [stack, setStack] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
-  const [playerValue, setPlayerValue] = useState([]);
-  const [dealerValue, setDealerValue] = useState([]);
+  const [playerValue, setPlayerValue] = useState(0);
+  const [dealerValue, setDealerValue] = useState(0);
+  const [playerBust, setPlayerBust] = useState(false);
+  const [dealerBust, setDealerBust] = useState(false);
   const [stand, setStand] = useState(false);
+  const [blackjack, setBlackjack] = useState("");
 
   const deck = [
     "1c",
@@ -67,6 +70,10 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
     "10Kh",
   ];
 
+  const blackjackDeck = ["1c", "10Kc", "10Ks", "10Kd", "10Kh", "10Qd", "10Qh"];
+  const blackjackDeckP = ["1c", "10Kc", "10Ks", "10Kd", "10Kh"];
+  const blackjackDeckD = ["10Kc", "1c", "10Ks", "10Kd", "10Kh"];
+
   function shuffle(array) {
     let currentIndex = array.length,
       randomIndex;
@@ -88,7 +95,6 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
       if (flipped) {
         card += "0";
       }
-      console.log(card);
       handSetter((prevHand) => [...prevHand, card]);
       return newStack;
     });
@@ -144,6 +150,10 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
     const initializeGame = async () => {
       const shuffledDeck = shuffle([...deck]);
       setStack(shuffledDeck);
+      // Blackjack deck for testing
+      // setStack(shuffle([...blackjackDeck]));
+      // setStack(blackjackDeckP);
+      // setStack(blackjackDeckD);
       await new Promise((resolve) => setTimeout(resolve, 250));
       await drawCard(setPlayerHand);
       await new Promise((resolve) => setTimeout(resolve, 250));
@@ -157,35 +167,100 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
     initializeGame();
   }, []);
 
-  useEffect(() => {
-    setPlayerValue(calculateHandValue(playerHand));
-    setDealerValue(calculateHandValue(dealerHand));
-    console.log("Player Hand:", playerHand);
-    console.log("Player Value:", playerValue);
-    console.log("Dealer Hand:", dealerHand);
-    console.log("Dealer Value:", dealerValue);
-  }, [playerHand, dealerHand]);
-
   // Log stack
   useEffect(() => {
     if (stack.length !== 0) {
-      console.log("Stack:", stack);
+      // console.log("Stack:", stack);
     }
   }, [stack]);
 
+  // Change player hand
+  useEffect(() => {
+    if (
+      playerHand.length === 2 &&
+      playerHand.some((card) => ["1s", "1c", "1h", "1d"].includes(card)) &&
+      playerHand.some((card) =>
+        ["10", "10J", "10Q", "10K"].includes(card.slice(0, -1))
+      )
+    ) {
+      setPlayerValue(21);
+      setBlackjack("player");
+    } else {
+      setPlayerValue(calculateHandValue(playerHand));
+    }
+  }, [playerHand]);
+
+  // Change player value
+  useEffect(() => {
+    if (playerValue > 21) {
+      setPlayerBust(true);
+      console.log("LOSE - player bust");
+      setStand(true);
+    }
+  }, [playerValue]);
+
+  // Change dealer hand
+  useEffect(() => {
+    if (
+      dealerHand.length === 2 &&
+      dealerHand.every((card) => !card.endsWith("0")) &&
+      dealerHand.some((card) => ["1s", "1c", "1h", "1d"].includes(card)) &&
+      dealerHand.some((card) =>
+        ["10", "10J", "10Q", "10K"].includes(card.slice(0, -1))
+      )
+    ) {
+      setDealerValue(21);
+      setBlackjack("dealer");
+    } else {
+      setDealerValue(calculateHandValue(dealerHand));
+    }
+
+    if (blackjack === "player") {
+      revealCards();
+    }
+  }, [dealerHand]);
+
+  // Change dealer value
   useEffect(() => {
     const dealerDraw = async () => {
-      if (stand && dealerValue < playerValue) {
+      if (stand && !playerBust && dealerValue <= playerValue) {
         await new Promise((resolve) => setTimeout(resolve, 500));
         await drawCard(setDealerHand);
         setDealerValue(calculateHandValue(dealerHand));
       }
     };
 
-    if (stand) {
-      dealerDraw();
+    dealerDraw();
+
+    if (dealerValue > 21) {
+      setDealerBust(true);
+      console.log("WIN - dealer bust");
+    } else if (
+      dealerValue > playerValue &&
+      !dealerBust &&
+      stand &&
+      blackjack === ""
+    ) {
+      console.log("LOSE - dealer has higher value");
     }
-  }, [stand, dealerValue, playerValue]);
+  }, [dealerValue]);
+
+  // After stand
+  useEffect(() => {
+    if (stand) {
+      revealCards();
+    }
+  }, [stand]);
+
+  // Blackjack
+  useEffect(() => {
+    if (blackjack === "player") {
+      // revealCards();
+      console.log("WIN - player blackjack");
+    } else if (blackjack === "dealer" && !playerBust) {
+      console.log("LOSE - dealer blackjack");
+    }
+  }, [blackjack]);
 
   return (
     <div className="h-full w-full max-w-xl p-4 flex flex-col gap-2 justify-center items-center">
@@ -216,7 +291,6 @@ function Game({ handleForfeitClick, bet, money, setMoney }) {
             text="-"
             color="bg-redButton"
             onClick={() => {
-              revealCards();
               setStand(true);
             }}
           />
